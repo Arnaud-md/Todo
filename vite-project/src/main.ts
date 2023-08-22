@@ -21,7 +21,17 @@ butInp.setAttribute("id","butI");
 butInp.setAttribute("type","button");
 butInp.innerText = "Valider";
 
-
+const save = function() {
+    let tabTasks:string[]=[];
+    let nodeList=document.querySelectorAll("#label");
+    let elements = Array.from(nodeList) as HTMLDivElement[];
+    elements.forEach( (element, i) => {
+        tabTasks[i]=element.innerText;
+        console.log(tabTasks[i]);
+    })
+    //localStorage.setItem('tabTasks',label.innerText);
+    localStorage.setItem('tabTasks', JSON.stringify(tabTasks));
+}
 
 butInp.addEventListener('click', () => {
     // input.value = ""
@@ -42,7 +52,8 @@ butInp.addEventListener('click', () => {
 
         //SAUVEGARDE DE LABEL.INNERTEXT
         ///localStorage.setItem('tabTasks',label.innerText);
- 
+        
+
         const butRemove = document.createElement("button");
         butRemove.setAttribute("id","butR");
         butRemove.setAttribute("type","button");
@@ -80,6 +91,7 @@ butInp.addEventListener('click', () => {
             todo.remove();
             butRemove2.addEventListener("click",() => {
                 did.remove();
+                save();
             })
         })
 
@@ -88,14 +100,14 @@ butInp.addEventListener('click', () => {
         //localStorage.setItem('banana2',label.innerText);
 
         //SAUVEGARDE DE LABEL.INNERTEXT
-        let nodeList=document.querySelectorAll("#label");
-        localStorage.setItem('tabTasks',label.innerText);
+        save();
 
 //        todo.appendChild(butRemove);
         input.value = "";
 
         butRemove.addEventListener("click",() => {
             todo.remove();
+            save();
         })
         
     }
@@ -107,39 +119,49 @@ inf?.appendChild(input);
 inf?.appendChild(butInp);
 app?.appendChild(view);
 
-if(localStorage.getItem('tabTasks')!=null) {
-    
-    const todo = document.createElement("div");
-    todo.setAttribute("id","todo");
+//if(localStorage.getItem('tabTasks')!=null) {
+//if(localStorage.getObj('tabTasks')!=null) {
+if(localStorage.getItem('tabTasks') != null) {
+    const savedSentences: string[] = JSON.parse(localStorage.getItem('tabTasks') as string) 
+    //for(let i=0;i<localStorage.getObj('tabTasks').length;i++) {
+    for(let i=0;i<savedSentences.length;i++) {
+        const todo = document.createElement("div");
+        todo.setAttribute("id","todo");
 
-    const checkbox = document.createElement("input");
-    checkbox.setAttribute("id","cb");
-    checkbox.setAttribute("type","checkbox");
-    checkbox.setAttribute("name","ma checkbox");
+        const checkbox = document.createElement("input");
+        checkbox.setAttribute("id","cb");
+        checkbox.setAttribute("type","checkbox");
+        checkbox.setAttribute("name","ma checkbox");
 
-    const label = document.createElement("div");
-    label.setAttribute("id","label");
+        const label = document.createElement("div");
+        label.setAttribute("id","label");
     ///label.setAttribute("label", "text");
-    label.innerText = ""+localStorage.getItem('tabTasks');
+    ///label.innerText = ""+localStorage.getItem('tabTasks');
+        ///label.innerText = ""+localStorage.getObj('tabTasks')[i];
+        let sentenceLabel = savedSentences[i];
+        label.innerText = sentenceLabel;
 
-    const butRemove = document.createElement("button");
-    butRemove.setAttribute("id","butR");
-    butRemove.setAttribute("type","button");
-    butRemove.innerText = "Supprimer";
+        const butRemove = document.createElement("button");
+        butRemove.setAttribute("id","butR");
+        butRemove.setAttribute("type","button");
+        butRemove.innerText = "Supprimer";
 
-    const butRemove2 = document.createElement("button");
-    butRemove2.setAttribute("id","butR2");
-    butRemove2.setAttribute("type","button");
-    butRemove2.innerText = "Supprimer";
-    butRemove2.style.width = "100px";
-    butRemove2.style.height = "25px";
-    butRemove2.style.margin = "12px auto auto 12px";
-    butRemove2.style.border = "1px solid black";
-
-    view.appendChild(todo);
-    todo.appendChild(checkbox);
-    todo.appendChild(label);
-    todo?.appendChild(butRemove);
+        const butRemove2 = document.createElement("button");
+        butRemove2.setAttribute("id","butR2");
+        butRemove2.setAttribute("type","button");
+        butRemove2.innerText = "Supprimer";
+        butRemove2.style.width = "100px";
+        butRemove2.style.height = "25px";
+        butRemove2.style.margin = "12px auto auto 12px";
+        butRemove2.style.border = "1px solid black";
+        butRemove2.addEventListener("click",() => {
+            todo.remove();
+            save();
+        })
+        view.appendChild(todo);
+        todo.appendChild(checkbox);
+        todo.appendChild(label);
+        todo?.appendChild(butRemove2);
         checkbox.addEventListener("click",() => {
             const did = document.createElement("div");
             did.setAttribute("id","did");
@@ -156,12 +178,10 @@ if(localStorage.getItem('tabTasks')!=null) {
             //on terminera par strike
             ///localStorage.setItem('banana',strike.innerText);
             todo.remove();
-            butRemove2.addEventListener("click",() => {
-                did.remove();
-            })
+            
         })
         //view?.appendChild(todo);
-        
+    }    
 }
 
 
