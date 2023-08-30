@@ -1,4 +1,3 @@
-import { distanceAndSkiddingToXY } from '@popperjs/core/lib/modifiers/offset';
 import './style.css'
 //import typescriptLogo from './typescript.svg'
 //import viteLogo from '/vite.svg'
