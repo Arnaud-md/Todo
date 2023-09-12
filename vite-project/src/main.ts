@@ -32,9 +32,10 @@ const save = function() {
     localStorage.setItem('tabTasks', JSON.stringify(tabTasks));
 }
 
-butInp.addEventListener('click', () => {
+butInp.addEventListener('click', async() => {
     // input.value = ""
     console.log(input.value)
+    
     if(input.value.length != 0){
         const todo = document.createElement("div");
         todo.setAttribute("id","todo");
@@ -48,7 +49,14 @@ butInp.addEventListener('click', () => {
         label.setAttribute("id","label");
         ///label.setAttribute("label", "text");
         label.innerText = input.value;
+        const res = await fetch("http://localhost:3040/saveBDD/" + input.value, {method : "POST"});
+        const message = await res.text();
+        console.log(message);
 
+        const res2 = await fetch("http://localhost:3040/findAll");
+        const message2 = await res2.text();
+        console.log(message2);
+        console.log("****************");
         //SAUVEGARDE DE LABEL.INNERTEXT
         ///localStorage.setItem('tabTasks',label.innerText);
         
@@ -72,7 +80,7 @@ butInp.addEventListener('click', () => {
         //Ajout d'appendchild
         todo.appendChild(label);
         todo.appendChild(butRemove);
-        checkbox.addEventListener("click",() => {
+        checkbox.addEventListener("click",async() => {
             const did = document.createElement("div");
             did.setAttribute("id","did");
 
@@ -87,6 +95,7 @@ butInp.addEventListener('click', () => {
             //local storage de strike et todo
             //on terminera par strike
             ///localStorage.setItem('banana',strike.innerText);
+            
             todo.remove();
             butRemove2.addEventListener("click",() => {
                 did.remove();
